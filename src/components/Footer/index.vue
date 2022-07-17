@@ -9,7 +9,18 @@
       @ended="playComplete"
     ></audio>
     <div class="Footer-left">
-      <img src="@/assets/img/test.jpg" alt="" />
+      <img src="@/assets/img/test.jpg" alt="" @click="musicWordDrawer" />
+      <el-drawer
+        :visible.sync="WordDrawer"
+        :with-header="false"
+        :size="925"
+        class="musicWordDrawer"
+        :wrapperClosable="true"
+        :append-to-body="true"
+        z-index="2"
+        :direction="direction"
+        ><MusicWordDrawer></MusicWordDrawer>
+      </el-drawer>
       <div class="song">
         <span>歌名</span>
         <span>歌手</span>
@@ -97,9 +108,12 @@
 <script>
 import { mapState } from "vuex";
 import { returnSecond, handleMusicTime, MusicTotalTime } from "@/plugins/utils";
-
+import MusicWordDrawer from "@/components/MusicWordDrawer";
 export default {
   name: "Footer",
+  components: {
+    MusicWordDrawer,
+  },
   data() {
     return {
       //歌曲总时间
@@ -124,6 +138,9 @@ export default {
       volume: 30,
       //保存静音前的音量
       volumeSave: 0,
+      //歌词抽屉状态
+      WordDrawer: false,
+      direction: "btt",
     };
   },
   mounted() {
@@ -255,6 +272,10 @@ export default {
         this.isMuted = true;
       }
     },
+    //查看歌词的抽屉
+    musicWordDrawer() {
+      this.WordDrawer = !this.WordDrawer;
+    },
   },
   filters: {
     handleMusicTime,
@@ -267,7 +288,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .Footer {
   position: fixed;
   left: 0;

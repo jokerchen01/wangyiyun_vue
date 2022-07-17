@@ -93,7 +93,6 @@ export default {
       collectedMusicList: [],
       // 该用户是否为当前用户
       isCurrentUser: false,
-      personalId: "",
     };
   },
   async created() {
@@ -104,29 +103,16 @@ export default {
   methods: {
     //请求个人信息
     async getPersonalInfo() {
-      if (this.$route.params.uid) {
-        //如果有先存在本地
-        localStorage.setItem("personalId", this.$route.params.uid);
-        let ret = await this.$API.reqPersonalInfo(this.$route.params.uid);
-        this.level = ret.level;
-        this.personalInfo = ret.profile;
-        this.isUserPage();
-      } else {
-        this.personalId = localStorage.getItem("personalId");
-        let ret = await this.$API.reqPersonalInfo(this.personalId);
-
-        this.level = ret.level;
-        this.personalInfo = ret.profile;
-        this.isUserPage();
-      }
+      let ret = await this.$API.reqPersonalInfo(this.$route.params.uid);
+      this.level = ret.level;
+      this.personalInfo = ret.profile;
     },
     //请求个人创建歌单
     async getUserMusicList() {
       let timestamp = Date.parse(new Date());
-      // 先从localStorage里面读取用户信息  如果登录成功是有存的
-      this.personalId = localStorage.getItem("personalId");
+
       let ret = await this.$API.reqUserMusicList({
-        uid: this.personalId,
+        uid: this.$route.params.uid,
         timestamp,
       });
       ret = ret.playlist;
@@ -150,16 +136,7 @@ export default {
       this.$message.success("退出成功!");
       this.isCurrentUser = false;
     },
-    //判断是否是去到本人页面
-    isUserPage() {
-      if (
-        localStorage.getItem("personalId") == localStorage.getItem("userId")
-      ) {
-        this.isCurrentUser = true;
-      } else {
-        this.isCurrentUser = false;
-      }
-    },
+
     goListDetails(id) {
       this.$router.push({
         name: "musiclistdetails",
@@ -167,6 +144,12 @@ export default {
           id: id,
         },
       });
+    },
+  },
+  watch: {
+    $route() {
+      this.getPersonalInfo();
+      this.getUserMusicList();
     },
   },
 };

@@ -105,13 +105,7 @@ export default {
       });
     },
   },
-  watch: {
-    $route() {
-      if (this.$route.name === "personal") {
-        this.goPersonal();
-      }
-    },
-  },
+  watch: {},
 };
 </script>
 

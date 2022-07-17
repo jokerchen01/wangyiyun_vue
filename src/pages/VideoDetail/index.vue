@@ -26,9 +26,7 @@
             alt=""
           />
           <span>{{
-            $route.params.type == "mv"
-              ? artists.name
-              : videoInfo.creator.nickname
+            $route.params.type == "mv" ? artists.name : creator.nickname
           }}</span>
         </div>
         <span class="v-name">
@@ -146,7 +144,12 @@
       </div>
       <div class="v-right">
         <h3>相关推荐</h3>
-        <div class="recommend" v-for="r in relatedVideo" :key="r.vid">
+        <div
+          class="recommend"
+          v-for="r in relatedVideo"
+          :key="r.vid"
+          @click="goToRelatedVideo(r.vid)"
+        >
           <img :src="r.coverUrl" alt="" />
           <div class="r-description">
             <div class="r-content">{{ r.title }}</div>
@@ -175,14 +178,22 @@ export default {
       // 评论页数
       commentsPage: 1,
       artists: {},
+      creator: {},
     };
   },
-  mounted() {
-    this.getMvDetail();
-    this.getMvUrl();
-    this.getMvComment();
+  async created() {
     this.getRelatedVideo();
+    if (this.$route.params.type == "mv") {
+      await this.getMvDetail();
+      this.getMvUrl();
+      this.getMvComment();
+    } else if (this.$route.params.type == "video") {
+      await this.getVideoDetail();
+      this.getVideoUrl();
+      this.getVideoComment();
+    }
   },
+  mounted() {},
   methods: {
     //获取mv详情
     async getMvDetail() {
@@ -215,10 +226,38 @@ export default {
       });
       this.relatedVideo = ret.data;
     },
+
     // 请求视频详情
     async getVideoDetail() {
       let ret = await this.$API.reqVideoDetail({
         id: this.$route.params.id,
+      });
+      this.videoInfo = ret.data;
+      this.creator = ret.data.creator;
+    },
+    // 请求video的url
+    async getVideoUrl() {
+      let ret = await this.$API.reqVideoUrl({
+        id: this.$route.params.id,
+      });
+      this.videoUrl = ret.urls[0].url;
+    },
+    //获取video评论
+    async getVideoComment() {
+      let timestamp = Date.parse(new Date());
+      let ret = await this.$API.reqVideoComment({
+        id: this.$route.params.id,
+        offset: 20 * (this.commentsPage - 1),
+        timestamp,
+      });
+      this.comments = ret.comments;
+      this.hotComments = ret.hotComments;
+    },
+    //去相关视频页面video
+    goToRelatedVideo(id) {
+      this.$router.push({
+        name: "videodetail",
+        params: { id, type: "video" },
       });
     },
   },
@@ -227,6 +266,15 @@ export default {
     handleMusicTime,
     handletime(time) {
       return dayjs(time).format("YYYY-MM-DD");
+    },
+  },
+  watch: {
+    async $route() {
+      await this.goToRelatedVideo(this.$route.params.id);
+      this.getVideoDetail();
+      this.getVideoUrl();
+      this.getVideoComment();
+      await this.getRelatedVideo();
     },
   },
 };

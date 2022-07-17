@@ -200,6 +200,7 @@ export default {
       width: 280px;
       height: 250px;
       margin: 0 15px;
+      cursor: pointer;
       .mv-img {
         position: relative;
         img {

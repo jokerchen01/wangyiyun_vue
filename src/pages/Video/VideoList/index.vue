@@ -24,7 +24,7 @@
         <span
           v-for="(v, index) in videoList"
           :key="index"
-          @click="goVideoDetail(v.vid)"
+          @click="goVideoDetail(v.data.vid)"
         >
           <div class="v-img">
             <img :src="v.data.coverUrl + '?param=680y400'" alt="" />
@@ -148,6 +148,7 @@ export default {
       width: 280px;
       height: 250px;
       margin: 0 15px;
+      cursor: pointer;
       .descrition {
         width: 240px;
         height: 30px;

@@ -101,13 +101,13 @@ const router = new VueRouter({
         },
         {
             name: 'personal',
-            path: '/personal',
+            path: '/personal/:uid',
             component: () => import('@/pages/Personal'),
 
         },
         {
             name: 'videodetail',
-            path: '/videodetail',
+            path: '/videodetail/:id',
             component: () => import('@/pages/VideoDetail'),
 
         },

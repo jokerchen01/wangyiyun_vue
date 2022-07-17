@@ -10,7 +10,9 @@
           <td>{{ track.ar[0].name }}</td>
         </tr>
 
-        <div @click="goListDetails(rank.id)">查看全部</div>
+        <div @click="goListDetails(rank.id)" style="cursor: pointer">
+          查看全部
+        </div>
       </div>
     </div>
 
@@ -32,8 +34,6 @@ export default {
   name: "",
   async created() {
     await this.getAllRanking();
-    this.getFiveSong();
-    this.GlobalList = this.allList.slice(4);
   },
   mounted() {},
   data() {
@@ -50,12 +50,14 @@ export default {
       if (result.code == 200) {
         this.RankingList = result.list.slice(0, 4);
         this.allList = result.list;
+        this.getFiveSong();
       }
     },
     async getListDetail(id) {
       let result = await this.$API.reqListDetail({ id });
       if (result.code == 200) {
         this.FiveSong.push(result.playlist);
+        this.GlobalList = this.allList.slice(4);
       }
     },
     //获取前五首歌
