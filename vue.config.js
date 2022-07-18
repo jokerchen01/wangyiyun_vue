@@ -22,7 +22,7 @@ module.exports = defineConfig({
 
     proxy: {
       '/api': {
-        /*  target: 'http://localhost:3000', */
+        /*   target: 'http://localhost:3000', */
         target: 'http://www.codeman.ink:3000',
 
         pathRewrite: {

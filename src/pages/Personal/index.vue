@@ -106,6 +106,10 @@ export default {
       let ret = await this.$API.reqPersonalInfo(this.$route.params.uid);
       this.level = ret.level;
       this.personalInfo = ret.profile;
+      if (this.$route.params.uid == localStorage.getItem("userId")) {
+        console.log(123);
+        this.isCurrentUser = true;
+      }
     },
     //请求个人创建歌单
     async getUserMusicList() {

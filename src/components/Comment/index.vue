@@ -19,7 +19,7 @@
     <div class="Wonderful-comment" v-show="currentPage == 1">
       <div class="title">精彩评论</div>
       <div class="contentBody" v-for="(hot, index) in hotComments" :key="index">
-        <div class="content1">
+        <div class="content1" v-if="hotComments.length != 0">
           <div class="head-portrait">
             <img
               :src="hot.user.avatarUrl + '?param=100y100'"

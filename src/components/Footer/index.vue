@@ -9,7 +9,8 @@
       @ended="playComplete"
     ></audio>
     <div class="Footer-left">
-      <img src="@/assets/img/test.jpg" alt="" @click="musicWordDrawer" />
+      <img src="@/assets/img/test.jpg" alt="" v-if="currentUrl == ''" />
+      <img :src="currentUrl" alt="" @click="musicWordDrawer" v-else />
       <el-drawer
         :visible.sync="WordDrawer"
         :with-header="false"
@@ -22,8 +23,14 @@
         ><MusicWordDrawer></MusicWordDrawer>
       </el-drawer>
       <div class="song">
-        <span>歌名</span>
-        <span>歌手</span>
+        <div>
+          <span v-if="currentUrl == ''">歌名</span>
+          <span v-else>{{ musicList[currentIndex].name }}</span>
+        </div>
+        <div>
+          <span v-if="currentUrl == ''">歌手</span>
+          <span v-else>{{ musicList[currentIndex].ar[0].name }}</span>
+        </div>
       </div>
     </div>
     <div class="Footer-center">
@@ -141,6 +148,9 @@ export default {
       //歌词抽屉状态
       WordDrawer: false,
       direction: "btt",
+
+      //当前播放歌曲图片
+      currentUrl: "",
     };
   },
   mounted() {
@@ -152,6 +162,7 @@ export default {
       this.totalTime = this.musicList[this.currentIndex].dt;
       let id = this.musicList[this.currentIndex].id;
       this.$store.dispatch("songInfo/playSong", { id });
+      this.currentUrl = this.musicList[this.currentIndex].al.picUrl;
     },
     getSongInfo(row) {
       //判断单点播放还是全部播放
@@ -161,6 +172,7 @@ export default {
         //全部播放时重置index值
         this.currentIndex = 0;
         this.getUrl();
+
         this.isPlay = true;
       } else {
         //加入列表之前判断是否有重复歌曲
@@ -175,11 +187,13 @@ export default {
             return item.id == row.id;
           });
           this.getUrl();
+
           this.isPlay = true;
         } else {
           this.musicList.unshift(row);
           this.currentIndex = 0;
           this.getUrl();
+
           this.isPlay = true;
         }
       }
@@ -305,7 +319,7 @@ export default {
 .Footer-left {
   display: flex;
   align-items: center;
-  width: 160px;
+  width: 180px;
 }
 .Footer-left::after {
   content: "\e668";
@@ -318,10 +332,16 @@ export default {
   height: 50px;
 }
 .song {
-  width: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100px;
   height: 40px;
 }
 .song span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   padding-left: 10px;
   display: block;
   width: 100%;
