@@ -47,23 +47,21 @@
             @click="goSingerDetail(singer.id)"
           >
             <img
-              v-lazy="(singer.picUrl || singer.coverImgUrl) + '?param=400y400'"
+              :src="(singer.picUrl || singer.coverImgUrl) + '?param=400y400'"
             />
             <div>{{ singer.name }}</div>
           </span>
         </div>
       </div>
-      <goTop scrollObj=".max"></goTop>
     </div>
   </div>
 </template>
 
 <script>
 import RightBox from "@/components/RightBox";
-import goTop from "@/components/goTop";
 
 export default {
-  components: { RightBox, goTop },
+  components: { RightBox },
   name: "Singer",
   data() {
     return {
@@ -138,7 +136,6 @@ export default {
       });
       this.singerList.push(...ret.artists);
       this.isMore = ret.more;
-      console.log(123);
     },
     //点击语种标签
     clickLanguageSort(index) {
@@ -169,7 +166,6 @@ export default {
         this.currentPage += 1;
         this.getSingerList();
         this.disabled = true;
-        console.log("禁止滚动");
       }
     },
 
@@ -192,22 +188,15 @@ export default {
 
 <style lang="less" scoped>
 .max {
-  width: 100%;
-  height: 722px;
-
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: rgb(204, 204, 204);
-  }
   .singerContainer {
     display: flex;
     width: 1200px;
-
+    flex-direction: column;
     margin: 10px auto;
+    .footer {
+      height: 300px;
+      width: 300px;
+    }
     .selectors {
       display: flex;
       flex-direction: column;
@@ -241,7 +230,6 @@ export default {
     .listCardContainer {
       display: flex;
       width: 100%;
-      height: 600px;
       flex-wrap: wrap;
 
       span {

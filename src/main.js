@@ -19,6 +19,9 @@ Vue.use(VueLazyLoad, {
   loading: imgLoading
 })
 
+
+
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 

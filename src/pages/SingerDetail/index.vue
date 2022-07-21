@@ -160,9 +160,10 @@ export default {
 <style lang="less" scoped>
 .SingerDetail {
   padding: 20px;
-  width: 1500px;
-  height: 800px;
-  overflow-y: auto;
+
+  height: calc(90vh - 20px);
+
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -170,6 +171,7 @@ export default {
     border-radius: 10px;
     background-color: rgb(204, 204, 204);
   }
+
   .center {
     margin: 20px auto;
     .personal {

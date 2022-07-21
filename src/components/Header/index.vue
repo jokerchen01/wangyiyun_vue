@@ -77,6 +77,7 @@ export default {
   },
   mounted() {
     this.getCurrentUserInfo();
+    this.$bus.$on("reparseUserInfo", this.reparseUserInfo);
   },
   methods: {
     back() {
@@ -87,12 +88,23 @@ export default {
     },
     //获取当前用户信息
     async getCurrentUserInfo() {
-      let timestamp = Date.parse(new Date());
-      let ret = await this.$API.reqUserInfo({
-        timestamp,
-      });
-      if (ret.profile != null) {
-        this.userInfo = ret.profile;
+      if (localStorage.getItem("userId")) {
+        let timestamp = Date.parse(new Date());
+        let ret = await this.$API.reqUserInfo({
+          timestamp,
+        });
+
+        if (ret.profile != null) {
+          this.userInfo = ret.profile;
+        }
+      } else {
+        this.userInfo = {};
+      }
+    },
+    //退出后重新解析模板
+    reparseUserInfo(type) {
+      if (type == 1) {
+        this.getCurrentUserInfo();
       }
     },
     //去个人页面
@@ -109,31 +121,32 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 /* 头部 */
 .header {
-  position: relative;
+  width: 100vw;
   display: flex;
-  justify-content: space-between;
+
   background-color: rgb(231, 66, 67);
   height: 62px;
   align-items: center;
 }
 .header-logo {
-  position: absolute;
   left: 20px;
-  width: 130px;
+  width: 230px;
   height: 30px;
 }
 
 .header-logo img {
-  width: 100%;
+  width: 160px;
 }
 .header-center {
-  position: absolute;
-  left: 220px;
-  width: 300px;
+  width: 1200px;
   height: 30px;
+  .el-row /deep/.el-col-8 {
+    width: 100px;
+    margin-top: 4px;
+  }
 }
 .el-icon-arrow-left {
   cursor: pointer;
@@ -142,16 +155,14 @@ export default {
   cursor: pointer;
 }
 .header-login {
-  position: absolute;
-  right: 25px;
-  width: 230px;
   height: 40px;
+  display: flex;
 }
 
 .search {
   border: 0;
   border-radius: 20px;
-  margin-top: 8px;
+  margin-top: 10px;
   color: #fff;
   font-size: 14px;
   background-color: rgb(220, 63, 64);
@@ -173,13 +184,11 @@ export default {
 img {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+
   cursor: pointer;
 }
 .login {
-  position: absolute;
-  top: 10px;
-  left: 50px;
+  margin-top: 10px;
   color: #fff;
 }
 

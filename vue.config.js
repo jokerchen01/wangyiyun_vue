@@ -1,8 +1,13 @@
 const { defineConfig } = require('@vue/cli-service')
+// // 引入等比适配插件
+
+
+
 module.exports = defineConfig({
   transpileDependencies: true,
   lintOnSave: false,
   productionSourceMap: false,
+
 
 
   configureWebpack: {
@@ -22,9 +27,10 @@ module.exports = defineConfig({
 
     proxy: {
       '/api': {
-        /*   target: 'http://localhost:3000', */
-        target: 'http://www.codeman.ink:3000',
-
+        target: 'http://114.132.182.115:3000',
+        /*  target: 'http://www.codeman.ink:3000', */
+        changeOrigin: true,
+        ws: true,
         pathRewrite: {
           '^/api': ''
         }
@@ -63,5 +69,9 @@ module.exports = defineConfig({
       }
 
     }
-  }
+  },
+
+
+
+
 })

@@ -69,7 +69,7 @@ export default {
 <style scpoed>
 .content {
   width: 1200px;
-  height: 660px;
+
   margin: 40px auto;
 }
 .el-carousel {

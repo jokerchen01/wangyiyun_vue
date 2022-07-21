@@ -14,9 +14,10 @@
         >歌手</span
       >
     </div>
+
     <div class="main">
       <keep-alive>
-        <router-view></router-view>
+        <router-view> </router-view>
       </keep-alive>
     </div>
   </div>
@@ -25,6 +26,7 @@
 <script>
 export default {
   name: "FindMusic",
+  components: {},
   data() {
     return {
       currentIndex: 1,
@@ -64,7 +66,21 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+.main {
+  height: calc(80vh - 10px);
+
+  padding: 0;
+
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(204, 204, 204);
+  }
+}
 .nav-top {
   display: flex;
   margin-top: 20px;
@@ -75,17 +91,7 @@ export default {
   height: 35px;
   cursor: pointer;
 }
-.main {
-  width: 1480px;
-  overflow-y: auto;
-}
-.main::-webkit-scrollbar {
-  width: 8px;
-}
-.main::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: rgb(204, 204, 204);
-}
+
 .active {
   font-size: 20px;
   font-weight: 700;

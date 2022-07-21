@@ -22,10 +22,10 @@
             "
             size="mini"
           >
-            <el-table-column type="index" :index="handleIndex" width="36">
+            <el-table-column type="index" :index="handleIndex">
             </el-table-column>
 
-            <el-table-column prop="name" width="1000">
+            <el-table-column prop="name">
               <template slot-scope="{ row }">
                 <!--  @dblclick="playMusic(row)" -->
                 <div @dblclick="playMusic(row)">
@@ -33,7 +33,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="ar[0].name" width="80">
+            <el-table-column prop="ar[0].name" width="60%">
               <template slot-scope="{ row }">
                 <!--  @dblclick="playMusic(row)" -->
                 <div style="color: #808080">
@@ -68,10 +68,10 @@
             "
             size="mini"
           >
-            <el-table-column type="index" :index="handleIndex" width="36">
+            <el-table-column type="index" :index="handleIndex">
             </el-table-column>
 
-            <el-table-column prop="name" width="1000">
+            <el-table-column prop="name">
               <template slot-scope="{ row }">
                 <!--  @dblclick="playMusic(row)" -->
                 <div @dblclick="playMusic(row)">
@@ -79,7 +79,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="" width="80">
+            <el-table-column prop="" width="60%">
               <template slot-scope="{ row }">
                 <!--  @dblclick="playMusic(row)" -->
                 <div style="color: #808080">{{ row.ar[0].name }}</div>
@@ -125,7 +125,7 @@ export default {
 .Album {
   margin: 30px 0 60px 0;
   display: flex;
-  width: 1400px;
+
   .checkAll {
     font-size: 14px;
     margin-top: 10px;
@@ -135,12 +135,13 @@ export default {
     width: 180px;
     height: 180px;
     img {
-      width: 100%;
-      height: 100%;
+      width: 180px;
+      height: 180px;
       border-radius: 15px;
     }
   }
   .Album-detail {
+    width: calc(100% - 200px);
     padding-left: 20px;
     .Album-name {
       font-size: 20px;

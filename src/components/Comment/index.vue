@@ -144,6 +144,7 @@ export default {
 
 <style lang="less" scoped>
 .comment {
+  padding-left: 30px;
   .myComment {
     margin: 20px auto;
     width: 1400px;

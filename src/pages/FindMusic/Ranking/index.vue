@@ -1,5 +1,6 @@
 <template>
   <div class="ranking">
+    <el-backtop></el-backtop>
     <h3>官方榜</h3>
     <div class="official-list" v-for="rank in FiveSong" :key="rank.id">
       <img v-lazy="rank.coverImgUrl" alt="" @click="goListDetails(rank.id)" />

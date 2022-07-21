@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header></Header>
+    <Header class="header"></Header>
     <el-container>
       <el-aside width="200px">
         <ul class="Music-List">
@@ -29,6 +29,7 @@ export default {
       flag: 1,
     };
   },
+  created() {},
   components: { Header, Footer },
 
   methods: {
@@ -64,7 +65,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped >
 .el-aside {
   color: #333;
   height: 12000px;

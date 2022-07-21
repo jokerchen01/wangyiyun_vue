@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="max"
-    v-infinite-scroll="load"
-    :infinite-scroll-disabled="disabled"
-    :infinite-scroll-immediate="false"
-    :infinite-scroll-distance="300"
-  >
+  <div class="max">
     <div class="detail">
       <div class="detail-header">
         <div class="detail-img">
@@ -65,7 +59,13 @@
           收藏者
         </div>
       </div>
-      <div class="container">
+      <div
+        class="container"
+        v-infinite-scroll="load"
+        :infinite-scroll-disabled="disabled"
+        :infinite-scroll-immediate="false"
+        :infinite-scroll-distance="300"
+      >
         <el-table
           :data="playlist.tracks"
           v-show="flag == 1"
@@ -82,30 +82,35 @@
           "
           size="mini"
         >
-          <el-table-column type="index" :index="handleIndex" width="80">
+          <el-table-column type="index" :index="handleIndex" width="">
           </el-table-column>
-          <el-table-column width="80">
+          <el-table-column width="80%">
             <i class="iconfont" style="font-size: 14px; font-weight: 700"
               >&#xe668;</i
             >
           </el-table-column>
-          <el-table-column prop="name" label="音乐标题" width="520">
+          <el-table-column prop="name" label="音乐标题" width="600%">
             <template slot-scope="{ row }">
               <div @dblclick="playMusic(row)" style="color: #808080">
                 {{ row.name }}
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="ar[0].name" label="歌手" width="250">
+          <el-table-column
+            prop="ar[0].name"
+            label="歌手"
+            width=""
+            show-overflow-tooltip
+          >
           </el-table-column>
           <el-table-column
             prop="al.name"
             label="专辑"
-            width="300"
+            width=""
             show-overflow-tooltip
           >
           </el-table-column>
-          <el-table-column prop="dt" label="时长" width="200" class="time">
+          <el-table-column prop="dt" label="时长" width="" class="time">
           </el-table-column>
         </el-table>
         <div style="height: 50px" v-show="flag == 1"></div>
@@ -117,8 +122,7 @@
           :subscribers="subscribers"
         ></Collection>
       </div>
-
-      <goTop scrollObj=".max"></goTop>
+      <div class="footer"></div>
     </div>
   </div>
 </template>
@@ -250,23 +254,26 @@ export default {
 <style lang="less" scoped>
 .max {
   width: 100%;
-  height: 790px;
 
-  overflow-y: scroll;
   .detail {
-    padding-left: 20px;
+    height: calc(90vh - 20px);
+    padding: 0;
+
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: rgb(204, 204, 204);
+    }
   }
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: rgb(204, 204, 204);
-  }
+
   .detail-header {
     display: flex;
     width: 100%;
-    height: 250px;
+    margin-bottom: 20px;
+    padding-left: 30px;
     .detail-img {
       text-align: right;
       padding-top: 30px;
@@ -385,7 +392,7 @@ export default {
       }
       .songInfo {
         width: 1100px;
-        padding-left: 40px;
+        padding-left: 10px;
         height: 60px;
         font-size: 13px;
         color: #666;
@@ -433,13 +440,22 @@ export default {
     }
   }
   .container {
-    height: 600px;
+    width: calc(100% - 100px);
+
+    &/deep/ .has-gutter tr th:nth-child(5) {
+      padding-left: 30px !important;
+    }
     &/deep/ .has-gutter tr th:nth-child(6) {
       padding-left: 30px !important;
     }
+
     &/deep/ .el-table__row td:nth-child(3) {
       color: rgb(36, 36, 36);
     }
+    &/deep/ .el-table__row td:nth-child(5) {
+      padding-left: 30px !important;
+    }
+
     &/deep/ .el-table__row td:nth-child(6) {
       padding-left: 30px !important;
     }
@@ -468,4 +484,8 @@ export default {
 }
 </style>
 <style scoped>
+.footer {
+  width: 200px;
+  height: 50px;
+}
 </style>

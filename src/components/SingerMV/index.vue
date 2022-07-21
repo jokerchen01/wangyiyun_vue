@@ -1,6 +1,11 @@
 <template>
   <div class="SingerMV">
-    <span class="mv" v-for="mv in MvList" :key="mv.id" @click="goVideoDetail">
+    <span
+      class="mv"
+      v-for="mv in MvList"
+      :key="mv.id"
+      @click="goVideoDetail(mv.id)"
+    >
       <div class="mv-img">
         <img :src="mv.imgurl + '?param=680y400'" alt="" />
         <div class="number">{{ mv.playCount | handleNum }}</div>
@@ -42,8 +47,14 @@ export default {
       this.currentPage = page;
       this.$emit("getSingerMvList", this.currentPage);
     },
-    goVideoDetail() {
-      this.$router.push({ name: "videodetail" });
+    goVideoDetail(id) {
+      this.$router.push({
+        name: "videodetail",
+        params: {
+          id,
+          type: "mv",
+        },
+      });
     },
   },
   filters: {

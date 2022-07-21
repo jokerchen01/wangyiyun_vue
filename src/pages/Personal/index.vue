@@ -139,6 +139,8 @@ export default {
 
       this.$message.success("退出成功!");
       this.isCurrentUser = false;
+      this.$router.push("/findmusic/personality");
+      this.$bus.$emit("reparseUserInfo", 1);
     },
 
     goListDetails(id) {
