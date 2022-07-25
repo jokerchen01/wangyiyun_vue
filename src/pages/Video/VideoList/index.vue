@@ -108,14 +108,14 @@ export default {
 <style lang="less" scoped>
 .v-header {
   display: flex;
-  width: 100%;
+  width: 88vw;
   height: 100px;
 
   .nav-center {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 88vw;
     height: 70px;
   }
   .nav-left {
@@ -129,7 +129,7 @@ export default {
 }
 
 .v-content {
-  width: 100%;
+  width: 88vw;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 8px;

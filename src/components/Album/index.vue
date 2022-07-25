@@ -33,7 +33,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="ar[0].name" width="60%">
+            <el-table-column prop="ar[0].name" width="100%">
               <template slot-scope="{ row }">
                 <!--  @dblclick="playMusic(row)" -->
                 <div style="color: #808080">
@@ -79,7 +79,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="" width="60%">
+            <el-table-column prop="" width="100%">
               <template slot-scope="{ row }">
                 <!--  @dblclick="playMusic(row)" -->
                 <div style="color: #808080">{{ row.ar[0].name }}</div>

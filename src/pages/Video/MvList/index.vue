@@ -138,7 +138,7 @@ export default {
 <style lang="less" scoped>
 .v-header {
   display: flex;
-  width: 100%;
+  width: 88vw;
   height: 150px;
 
   .selectors {
@@ -174,7 +174,7 @@ export default {
   }
 }
 .v-content {
-  width: 100%;
+  width: 88vw;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 8px;

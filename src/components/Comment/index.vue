@@ -201,11 +201,11 @@ export default {
               }
               .share::after {
                 margin: 0 20px;
-                content: "\e62a";
+                content: "\e60c";
                 font-family: "iconfont";
               }
               .say::after {
-                content: "\e62a";
+                content: "\e650";
                 font-family: "iconfont";
               }
             }

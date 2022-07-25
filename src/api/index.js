@@ -78,3 +78,12 @@ export const reqVideoDetail = (params) => requests({ url: `/video/detail`, param
 export const reqVideoUrl = (params) => requests({ url: `/video/url`, params, method: 'get' })
 //获取视频评论
 export const reqVideoComment = (params) => requests({ url: `/comment/video`, params, method: 'get' })
+
+
+//获取歌词页面的评论
+export const reqMusicComment = (params) => requests({ url: `/comment/music`, params, method: 'get' })
+
+export const reqHotComment = (params) => requests({ url: `/comment/hot`, params, method: 'get' })
+
+//获取歌词
+export const reqLyric = (params) => requests({ url: `/lyric`, params, method: 'get' })

@@ -22,6 +22,8 @@ Vue.use(VueLazyLoad, {
 
 
 
+
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 

@@ -188,6 +188,7 @@ img {
   cursor: pointer;
 }
 .login {
+  margin-left: 10px;
   margin-top: 10px;
   color: #fff;
 }

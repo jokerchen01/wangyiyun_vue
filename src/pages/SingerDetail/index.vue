@@ -3,7 +3,7 @@
     <div class="center">
       <div class="personal">
         <div class="personal-img">
-          <img :src="singerInfo.cover + '?param=400y400'" alt="" />
+          <img :src="singerInfo.cover" alt="" />
         </div>
         <div class="personal-right">
           <div class="name1">{{ singerInfo.name }}</div>
@@ -160,7 +160,7 @@ export default {
 <style lang="less" scoped>
 .SingerDetail {
   padding: 20px;
-
+  width: 88vw;
   height: calc(90vh - 20px);
 
   overflow-y: scroll;

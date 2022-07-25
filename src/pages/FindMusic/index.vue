@@ -69,7 +69,7 @@ export default {
 <style lang="less" scoped>
 .main {
   height: calc(80vh - 10px);
-
+  width: 88vw;
   padding: 0;
 
   overflow-y: scroll;

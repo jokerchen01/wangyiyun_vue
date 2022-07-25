@@ -122,7 +122,6 @@
           :subscribers="subscribers"
         ></Collection>
       </div>
-      <div class="footer"></div>
     </div>
   </div>
 </template>
@@ -169,6 +168,7 @@ export default {
         this.playlist = result.playlist;
         this.creator = this.playlist.creator;
       }
+
       this.playlist.tracks.forEach((item, index) => {
         this.playlist.tracks[index].dt = handleMusicTime(item.dt);
       });
@@ -253,7 +253,7 @@ export default {
 
 <style lang="less" scoped>
 .max {
-  width: 100%;
+  width: 88vw;
 
   .detail {
     height: calc(90vh - 20px);
@@ -331,6 +331,7 @@ export default {
           cursor: pointer;
         }
         .time {
+          margin-left: 10px;
           width: 150px;
           font-size: 13px;
           line-height: 30px;

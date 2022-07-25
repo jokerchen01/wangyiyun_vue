@@ -9,18 +9,36 @@
       @ended="playComplete"
     ></audio>
     <div class="Footer-left">
-      <img src="@/assets/img/test.jpg" alt="" v-if="currentUrl == ''" />
-      <img :src="currentUrl" alt="" @click="musicWordDrawer" v-else />
+      <img
+        src="@/assets/img/test.jpg"
+        alt=""
+        v-if="currentUrl == ''"
+        @click="musicWordDrawer"
+        style="cursor: pointer"
+      />
+      <img
+        :src="currentUrl"
+        alt=""
+        @click="musicWordDrawer"
+        v-else
+        style="cursor: pointer"
+      />
       <el-drawer
         :visible.sync="WordDrawer"
         :with-header="false"
-        :size="925"
+        :size="'100%'"
         class="musicWordDrawer"
         :wrapperClosable="true"
         :append-to-body="true"
         z-index="2"
         :direction="direction"
-        ><MusicWordDrawer></MusicWordDrawer>
+        ><MusicWordDrawer
+          :songInfo="songInfo"
+          :currentUrl="currentUrl"
+          :isPlay="isPlay"
+          :currentIndex="currentIndex"
+          :currentTime="currentTime + 0.7"
+        ></MusicWordDrawer>
       </el-drawer>
       <div class="song">
         <div>
@@ -56,6 +74,7 @@
             v-model="timeProgress"
             :show-tooltip="false"
             @change="changeProgress"
+            :disabled="musicList.length == 0"
           ></el-slider>
           <!--   
           :disabled="musicList.length == 0" -->

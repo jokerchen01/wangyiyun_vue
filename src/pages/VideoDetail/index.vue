@@ -129,15 +129,16 @@
           </div>
         </div>
         <!-- 分页器 -->
-        <!--  @size-change="handleSizeChange     @current-change="handleCurrentChange""
+        <!--  @size-change="handleSizeChange    
        -->
         <div class="footer">
           <el-pagination
             style="text-align: center"
             :current-page="1"
-            :page-size="50"
+            :page-size="20"
             layout="prev, pager, next"
-            :total="10"
+            :total="total"
+            @current-change="handleCurrentChange"
           >
           </el-pagination>
         </div>
@@ -177,6 +178,7 @@ export default {
       hotComments: [],
       // 评论页数
       commentsPage: 1,
+      total: 1,
       artists: {},
       creator: {},
     };
@@ -218,6 +220,15 @@ export default {
       });
       this.comments = ret.comments;
       this.hotComments = ret.hotComments;
+      this.total = ret.total;
+    },
+    handleCurrentChange(page) {
+      this.commentsPage = page;
+      if (this.$route.params.type == "mv") {
+        this.getMvComment();
+      } else {
+        this.getVideoComment();
+      }
     },
     //获取相关视频
     async getRelatedVideo() {
@@ -252,6 +263,7 @@ export default {
       });
       this.comments = ret.comments;
       this.hotComments = ret.hotComments;
+      this.total = ret.total;
     },
     //去相关视频页面video
     goToRelatedVideo(id) {
@@ -352,6 +364,11 @@ export default {
           text-align: center;
           border-radius: 15px;
           border: 1px solid #666;
+          &::before {
+            margin-right: 5px;
+            content: "\e62a";
+            font-family: "iconfont";
+          }
         }
         .collection {
           width: 100px;
@@ -360,6 +377,11 @@ export default {
           text-align: center;
           border-radius: 15px;
           border: 1px solid #666;
+          &::before {
+            margin-right: 5px;
+            content: "\e65e";
+            font-family: "iconfont";
+          }
         }
         .share {
           width: 100px;
@@ -368,6 +390,11 @@ export default {
           text-align: center;
           border-radius: 15px;
           border: 1px solid #666;
+          &::before {
+            margin-right: 5px;
+            content: "\e60c";
+            font-family: "iconfont";
+          }
         }
       }
       .v-comment {
@@ -429,11 +456,11 @@ export default {
                   }
                   .share::after {
                     margin: 0 20px;
-                    content: "\e62a";
+                    content: "\e60c";
                     font-family: "iconfont";
                   }
                   .say::after {
-                    content: "\e62a";
+                    content: "\e650";
                     font-family: "iconfont";
                   }
                 }
