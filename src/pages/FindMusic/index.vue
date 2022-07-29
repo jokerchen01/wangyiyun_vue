@@ -15,10 +15,8 @@
       >
     </div>
 
-    <div class="main">
-      <keep-alive>
-        <router-view> </router-view>
-      </keep-alive>
+    <div class="main" ref="content">
+      <router-view @goTop="goTop"> </router-view>
     </div>
   </div>
 </template>
@@ -61,6 +59,9 @@ export default {
       } else if (this.$route.path == "/findmusic/singer") {
         this.currentIndex = 4;
       }
+    },
+    goTop() {
+      this.$refs.content.scrollTop = 0;
     },
   },
 };

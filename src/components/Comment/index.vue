@@ -16,8 +16,8 @@
       <el-button size="mini" round class="commit">评论</el-button>
     </div>
     <!-- 精彩评论 -->
-    <div class="Wonderful-comment" v-show="currentPage == 1">
-      <div class="title">精彩评论</div>
+    <div class="Wonderful-comment" v-loading="loading">
+      <div class="title" v-show="currentPage == 1">精彩评论</div>
       <div class="contentBody" v-for="(hot, index) in hotComments" :key="index">
         <div class="content1" v-if="hotComments.length != 0">
           <div class="head-portrait">
@@ -90,6 +90,7 @@
         layout="prev, pager, next"
         :total="total"
         @current-change="handleCurrentChange"
+        v-show="!loading"
       >
       </el-pagination>
     </div>
@@ -111,6 +112,7 @@ export default {
       hotComments: [],
       //总数量
       total: 1,
+      loading: true,
     };
   },
   methods: {
@@ -120,13 +122,16 @@ export default {
         offset: (this.currentPage - 1) * 50,
         limit: 50,
       });
-      console.log(ret);
+
       this.commentList = ret.comments;
       this.hotComments = ret.hotComments;
       this.total = ret.total;
+      this.loading = false;
     },
     handleCurrentChange(page) {
       this.currentPage = page;
+      this.loading = true;
+      this.$emit("goTop");
       this.getComment();
     },
     //去个人页面
@@ -213,6 +218,9 @@ export default {
         }
       }
     }
+  }
+  .footer {
+    height: 60px;
   }
 }
 </style>

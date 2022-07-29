@@ -139,6 +139,7 @@ export default {
 
       this.$message.success("退出成功!");
       this.isCurrentUser = false;
+      this.$bus.$emit("clearUserSongList", 1);
       this.$router.push("/findmusic/personality");
       this.$bus.$emit("reparseUserInfo", 1);
     },

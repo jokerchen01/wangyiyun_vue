@@ -62,14 +62,14 @@
         <i class="iconfont icon-xiayishou" @click="playComplete"></i>
         <i class="iconfont icon-aixin"></i>
       </span>
-      <div class="progress">
+      <div
+        class="progress"
+        @mousedown="isDraging = true"
+        @mouseup="isDraging = false"
+      >
         <div class="start-time">{{ currentTime | handleMusicTime }}</div>
 
-        <div
-          class="block block-big"
-          @mousedown="isDraging = true"
-          @mouseup="isDraging = false"
-        >
+        <div class="block block-big">
           <el-slider
             v-model="timeProgress"
             :show-tooltip="false"
@@ -248,7 +248,7 @@ export default {
     },
     //拉取滚动条
     changeProgress(e) {
-      // console.log(e);
+      console.log(e);
 
       this.currentTime = Math.floor((e / 100) * this.durationNum);
       // 改变audio的实际当前播放时间
@@ -317,6 +317,14 @@ export default {
   },
   computed: {
     ...mapState("songInfo", ["songInfo", "musicList"]),
+  },
+  watch: {
+    currentTime(newValue) {
+      if (newValue == 0) {
+        this.isDraging = false;
+        //解决了拉取进度条在0时候不更新isDraging的bug
+      }
+    },
   },
 };
 </script>

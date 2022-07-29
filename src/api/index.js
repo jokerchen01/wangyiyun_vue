@@ -16,7 +16,7 @@ export const reqAllLabels = () => requests({ url: '/playlist/catlist', method: '
 //获取排行榜/toplist
 export const reqAllRanking = () => requests({ url: '/toplist', method: 'get' })
 //获取歌单中的歌曲列表
-export const reqListDetail = (params) => requests({ url: '/playlist/detail', params, method: 'get' })
+export const reqListDetail = (params) => requests({ url: `/playlist/detail`, params, method: 'post' })
 //获取音乐的url
 export const reqSongUrl = (params) => requests({ url: `/song/url/`, params, method: 'get' })
 
@@ -87,3 +87,6 @@ export const reqHotComment = (params) => requests({ url: `/comment/hot`, params,
 
 //获取歌词
 export const reqLyric = (params) => requests({ url: `/lyric`, params, method: 'get' })
+
+//获取用户歌单
+export const reqUserSongList = (params) => requests({ url: `/user/playlist`, params, method: 'get' })

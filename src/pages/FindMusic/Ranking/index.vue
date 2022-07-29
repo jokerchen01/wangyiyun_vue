@@ -1,9 +1,14 @@
 <template>
   <div class="ranking">
     <el-backtop></el-backtop>
-    <h3>官方榜</h3>
-    <div class="official-list" v-for="rank in FiveSong" :key="rank.id">
-      <img v-lazy="rank.coverImgUrl" alt="" @click="goListDetails(rank.id)" />
+    <h3 v-show="!loading">官方榜</h3>
+    <div
+      class="official-list"
+      v-for="rank in FiveSong"
+      :key="rank.id"
+      v-loading="loading"
+    >
+      <img :src="rank.coverImgUrl" alt="" @click="goListDetails(rank.id)" />
       <div class="listContainer">
         <tr v-for="(track, index) in rank.tracks.slice(0, 5)" :key="track.id">
           <td>{{ index + 1 }}</td>
@@ -17,7 +22,7 @@
       </div>
     </div>
 
-    <h3>全球榜</h3>
+    <h3 v-show="!loading">全球榜</h3>
     <div class="Global-list">
       <span v-for="g in GlobalList" :key="g.id">
         <img
@@ -35,14 +40,22 @@ export default {
   name: "",
   async created() {
     await this.getAllRanking();
+    this.RankingList.forEach((item) => {
+      this.getListDetail(item.id);
+    });
+    setTimeout(() => {
+      this.GlobalList = this.allList.slice(4);
+      this.loading = false;
+    }, 1000);
   },
-  mounted() {},
+
   data() {
     return {
       RankingList: [],
       GlobalList: [],
       FiveSong: [],
       allList: [],
+      loading: true,
     };
   },
   methods: {
@@ -51,22 +64,15 @@ export default {
       if (result.code == 200) {
         this.RankingList = result.list.slice(0, 4);
         this.allList = result.list;
-        this.getFiveSong();
       }
     },
     async getListDetail(id) {
       let result = await this.$API.reqListDetail({ id });
       if (result.code == 200) {
         this.FiveSong.push(result.playlist);
-        this.GlobalList = this.allList.slice(4);
       }
     },
-    //获取前五首歌
-    getFiveSong() {
-      this.RankingList.forEach((item) => {
-        this.getListDetail(item.id);
-      });
-    },
+
     goListDetails(id) {
       this.$router.push({
         name: "musiclistdetails",

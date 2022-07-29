@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content1" ref="content">
     <!-- 头部 -->
     <div class="highqualityEntry">
       <img v-lazy="HighQualityImg.coverImgUrl" alt="" class="backgroundImg" />
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="songList">
+    <div class="songList" v-loading="loading">
       <span v-for="song in songList" :key="song.id">
         <img
           :src="song.coverImgUrl + '?param=400y400'"
@@ -52,6 +52,7 @@
         layout="prev, pager, next"
         :total="total"
         @current-change="handleCurrentChange"
+        v-show="!loading"
       >
       </el-pagination>
     </div>
@@ -79,9 +80,12 @@ export default {
       allLabels: [],
       //box标签当前显示的名字
       total: 1,
+      loading: true,
     };
   },
   mounted() {
+    // 切换页面时滚动条自动滚动到顶部
+
     this.getBoutiqueLabel();
     this.getHighQuality();
   },
@@ -111,15 +115,18 @@ export default {
       });
       this.songList = result.playlists;
       this.total = result.total;
+      this.loading = false;
     },
     clickLeftBox(label) {
       this.currentLabel = label;
       this.currentPage = 1;
+      this.loading = true;
       this.getSongList();
     },
     clickRightBox(index) {
       this.currentLabel = this.hotLabel[index];
       this.currentPage = 1;
+      this.loading = true;
       this.getSongList();
     },
     //获取全部标签
@@ -131,7 +138,9 @@ export default {
     },
     handleCurrentChange(page) {
       this.currentPage = page;
+      this.loading = true;
       this.getSongList();
+      this.$emit("goTop");
     },
     goListDetails(id) {
       this.$router.push({
@@ -146,7 +155,7 @@ export default {
 </script>
 
 <style scoped>
-.content {
+.content1 {
   width: 1200px;
   margin: 40px auto;
 }

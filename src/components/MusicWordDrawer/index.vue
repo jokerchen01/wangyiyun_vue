@@ -34,6 +34,7 @@
               class="lyricsItem"
               :class="lyricsIndex - 1 == index ? 'currentLyric' : ''"
             >
+              <!-- -1因为歌词快了一句 -->
               {{ item[1] }}
             </div>
           </div>
@@ -147,6 +148,7 @@ export default {
       this.getLyric();
     }
   },
+
   computed: {
     ...mapState("songInfo", ["musicList"]),
   },
@@ -189,8 +191,10 @@ export default {
       let ret = await this.$API.reqLyric({ id });
       let lyrics = ret.lrc.lyric;
       //换行符分割
+
       let arr = lyrics.split("\n");
       //array用于去除空行
+
       let array = [];
       // let obj = {};
       let time = "";
@@ -202,7 +206,9 @@ export default {
           array.push(item);
         }
       });
+
       arr = array;
+
       arr.forEach((item) => {
         time = item.split("]")[0];
 
@@ -212,7 +218,7 @@ export default {
         var t = time.slice(1).split(":");
 
         //将结果压入最终数组
-        result.push([parseInt(t[0], 10) * 60 + parseFloat(t[1]), value]);
+        result.push([parseInt(t[0]) * 60 + parseFloat(t[1]), value]);
       });
       this.lyric = result;
 
@@ -228,11 +234,12 @@ export default {
       if (placeholderHeight == 0) {
         placeholderHeight = lyricsArr[0].offsetTop - lyrics.offsetTop;
       }
-      //   歌词item在歌词框的高度 = 歌词框的offsetTop - 歌词item的offsetTop
-      //   console.log(currentLyric);
-      if (lyricsArr[currentLyric - 1]) {
+
+      if (lyricsArr[currentLyric - 4]) {
         let distance = lyricsArr[currentLyric - 4].offsetTop - lyrics.offsetTop;
+
         //   lyricsArr[currentLyric].scrollIntoView();
+
         lyrics.scrollTo({
           behavior: "smooth",
           top: distance - placeholderHeight,
@@ -242,12 +249,11 @@ export default {
     //获取当前歌词索引
     getCurrentLyricsIndex(currentTime) {
       let lyricsIndex = 0;
-      this.lyric.some((item) => {
+      this.lyric.forEach((item) => {
         if (lyricsIndex < this.lyric.length - 1) {
           if (currentTime > item[0]) {
             lyricsIndex += 1;
           }
-          return currentTime <= item[0];
         }
       });
       // console.log(lyricsIndex);
@@ -264,6 +270,7 @@ export default {
 
     currentTime(currentTime, lastTime) {
       if (
+        //进度条拉动或者切歌
         (lastTime && Math.abs(currentTime - lastTime) >= 1) ||
         (this.lyricsIndex == 0 && this.lyric.length > 1)
       ) {

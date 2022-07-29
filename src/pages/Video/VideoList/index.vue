@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="v-content">
-      <div class="v-list">
+      <div class="v-list" v-loading="loading">
         <span
           v-for="(v, index) in videoList"
           :key="index"
@@ -42,6 +42,7 @@
 import { handleNum, handleMusicTime } from "@/plugins/utils";
 import RightBox from "@/components/RightBox";
 import LeftBox from "@/components/LeftBox";
+let i = 2;
 export default {
   name: "",
   components: {
@@ -55,11 +56,13 @@ export default {
       hotLabel: [],
       videoList: [],
       videoPage: 1,
+      loading: true,
     };
   },
   async created() {
     await this.getVideoLabel();
-    await this.getVideoList(this.currentLabel.id);
+    this.getVideoList(this.currentLabel.id);
+    i = 2;
   },
 
   methods: {
@@ -70,13 +73,22 @@ export default {
       this.currentLabel = ret.data[0];
     },
     //获取视频list
+
     async getVideoList(id) {
       let ret = await this.$API.reqVideoList({
         id: id,
         offset: 8 * (this.videoPage - 1),
       });
-      this.videoList = ret.datas;
-      console.log(this.videoList);
+      this.videoPage = this.videoPage + 1;
+      ret.datas.forEach((item) => {
+        this.videoList.push(item);
+      });
+
+      this.loading = false;
+      i--;
+      if (i >= 1) {
+        this.getVideoList(id);
+      }
     },
     //获取全部标签
     async getAllLabels() {
@@ -85,11 +97,17 @@ export default {
     },
     clickLeftBox(label) {
       this.currentLabel = label;
+      this.loading = true;
       this.getVideoList(this.currentLabel.id);
+      this.videoList = [];
+      i = 2;
     },
     clickRightBox(index) {
+      this.loading = true;
       this.currentLabel = this.hotLabel[index];
       this.getVideoList(this.currentLabel.id);
+      this.videoList = [];
+      i = 2;
     },
     goVideoDetail(id) {
       this.$router.push({
@@ -169,6 +187,11 @@ export default {
           right: 10px;
           font-size: 13px;
           color: #fff;
+          &::before {
+            content: "\ea72";
+            font-size: 16px;
+            font-family: "iconfont";
+          }
         }
         .time {
           position: absolute;

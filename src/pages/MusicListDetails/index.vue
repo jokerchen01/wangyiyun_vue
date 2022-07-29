@@ -1,6 +1,6 @@
 <template>
   <div class="max">
-    <div class="detail">
+    <div class="detail" ref="detail">
       <div class="detail-header">
         <div class="detail-img">
           <img :src="playlist.coverImgUrl" alt="" />
@@ -69,6 +69,7 @@
         <el-table
           :data="playlist.tracks"
           v-show="flag == 1"
+          v-loading="loading"
           :row-style="{ height: '30px' }"
           :cell-style="{ padding: '0px' }"
           stripe
@@ -115,11 +116,17 @@
         </el-table>
         <div style="height: 50px" v-show="flag == 1"></div>
 
-        <Comment class="comment" v-show="flag == 2" ref="Comment"></Comment>
+        <Comment
+          class="comment"
+          v-show="flag == 2"
+          ref="Comment"
+          @goTop="goTop"
+        ></Comment>
         <Collection
           class="collectioner"
           v-show="flag == 3"
           :subscribers="subscribers"
+          :isLoading="loading"
         ></Collection>
       </div>
     </div>
@@ -154,6 +161,7 @@ export default {
       disabled: true,
       subscribers: [],
       currentPage: 1,
+      loading: true,
     };
   },
 
@@ -163,7 +171,11 @@ export default {
   methods: {
     //获取歌单歌曲
     async getSongList() {
-      let result = await this.$API.reqListDetail({ id: this.$route.params.id });
+      let timestamp = Date.parse(new Date());
+      let result = await this.$API.reqListDetail({
+        id: this.$route.params.id,
+        timestamp,
+      });
       if (result.code == 200) {
         this.playlist = result.playlist;
         this.creator = this.playlist.creator;
@@ -172,6 +184,7 @@ export default {
       this.playlist.tracks.forEach((item, index) => {
         this.playlist.tracks[index].dt = handleMusicTime(item.dt);
       });
+      this.loading = false;
     },
     //歌曲序号
     handleIndex(index) {
@@ -203,7 +216,7 @@ export default {
     },
     goCollection() {
       this.flag = 3;
-
+      this.loading = true;
       this.getCollectionList();
     },
     //获取收藏着列表
@@ -216,7 +229,7 @@ export default {
 
       this.subscribers.push(...ret.subscribers);
       this.isMore = ret.more;
-      console.log(ret);
+      this.loading = false;
     },
     // 卡片上拉触底触发
     load() {
@@ -229,6 +242,11 @@ export default {
       } else {
         console.log(123);
       }
+    },
+    //评论翻页回到顶部
+    goTop() {
+      this.$refs.detail.scrollTop = 0;
+      console.log(123);
     },
   },
   filters: {
@@ -246,6 +264,10 @@ export default {
       } else {
         this.disabled = true;
       }
+    },
+
+    $route() {
+      this.getSongList();
     },
   },
 };

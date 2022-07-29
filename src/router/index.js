@@ -26,7 +26,7 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
 
 //创建router实例对象
 const router = new VueRouter({
-
+    scrollBehavior: () => ({ y: 0 }),
     routes: [
         {
             path: '/findmusic',

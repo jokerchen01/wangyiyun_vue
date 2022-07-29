@@ -1,5 +1,5 @@
 <template>
-  <div class="collection">
+  <div class="collection" v-loading="isLoading">
     <div class="user" v-for="sub in subscribers" :key="sub.userId">
       <div class="user-img">
         <img
@@ -18,7 +18,7 @@
 <script>
 export default {
   name: "Collection",
-  props: ["subscribers"],
+  props: ["subscribers", "isLoading"],
   methods: {
     //去个人页面
     goPersonal(id) {

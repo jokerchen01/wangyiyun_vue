@@ -49,8 +49,9 @@ export default {
         window.localStorage.setItem("userId", ret.profile.userId);
 
         this.$emit("getUserInfo", ret.profile);
-
+        this.$bus.$emit("loginSuccess", 1);
         this.$message.success("登录成功!");
+        this.$router.push("/findmusic/personality");
       } else if (ret.code == 400) {
         // 手机号错误
         this.$message.error("手机号错误!");

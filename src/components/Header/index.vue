@@ -133,7 +133,7 @@ export default {
 }
 .header-logo {
   left: 20px;
-  width: 230px;
+  width: 15%;
   height: 30px;
 }
 
@@ -141,7 +141,7 @@ export default {
   width: 160px;
 }
 .header-center {
-  width: 1200px;
+  width: 70%;
   height: 30px;
   .el-row /deep/.el-col-8 {
     width: 100px;
