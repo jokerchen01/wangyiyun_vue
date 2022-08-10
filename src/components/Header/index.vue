@@ -79,7 +79,7 @@
                     class="suggestItemDetail"
                     v-for="(item, index) in searchSuggestList.songs"
                     :key="index"
-                    @click="clickSuggestSong(item.id)"
+                    @dblclick="clickSuggestSong(item.id)"
                   >
                     <!--  @click="clickSuggestSong(item.id)" -->
                     {{ item.name + " - " + item.artists[0].name }}
@@ -210,6 +210,8 @@ export default {
       searchInput: "",
       //推荐搜索列表
       searchSuggestList: [],
+      //搜索中点歌
+      currentSong: {},
     };
   },
   created() {
@@ -299,8 +301,16 @@ export default {
       this.$router.push({ name: "musiclistdetails", params: { id } });
       this.isSearchPopShow = false;
     },
+
     // 点击搜索建议中单曲的回调
-    clickSuggestSong(id) {},
+    async clickSuggestSong(ids) {
+      let res = await this.$API.reqSearchMusicInfo({ ids });
+
+      let row = res.songs[0];
+
+      this.$bus.$emit("getSongInfo", row);
+      this.isSearchPopShow = false;
+    },
     //去个人页面
     goPersonal() {
       this.$router.push({

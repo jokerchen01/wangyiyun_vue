@@ -102,3 +102,5 @@ export const reqSearchSuggest = (params) => requests({ url: `/search/suggest`, p
 export const reqMultMath = (params) => requests({ url: `/search/multimatch`, params, method: 'get' })
 //搜索歌曲列表
 export const reqSearchSong = (params) => requests({ url: `/cloudsearch`, params, method: 'get' })
+//点击搜索中的单曲
+export const reqSearchMusicInfo = (params) => requests({ url: `/song/detail`, params, method: 'get' })
