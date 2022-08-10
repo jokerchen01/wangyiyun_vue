@@ -97,6 +97,7 @@ export default {
   font-size: 20px;
   font-weight: 700;
   border-bottom: 3px solid red;
+  transform: translateY(-3px);
 }
 </style>
 

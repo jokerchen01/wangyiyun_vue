@@ -1,6 +1,6 @@
 <template>
   <div class="MusicWordDrawer">
-    <div class="drawer-content" v-if="isShow">
+    <div class="drawer-content" v-if="isShow" v-loading="!isShow">
       <div class="word">
         <div class="le-img">
           <img
@@ -23,10 +23,10 @@
             class="img2"
           />
         </div>
-        <div class="rl-word" v-if="isShow">
-          <div class="title">{{ currentSong.name }}</div>
-          <div class="detail">{{ currentSong.al.name }}</div>
-          <div class="singer">{{ currentSong.ar[0].name }}</div>
+        <div class="rl-word" v-show="isShow">
+          <div class="title">{{ title }}</div>
+          <div class="detail">{{ detail }}</div>
+          <div class="singer">{{ singer }}</div>
           <div class="lyrics">
             <div
               v-for="(item, index) in lyric"
@@ -140,12 +140,16 @@ export default {
       lyric: [[0, "正在加载歌词"]],
       // 当前歌词索引
       lyricsIndex: 0,
+      title: "",
+      singer: "",
+      detail: "",
     };
   },
-  created() {
-    if (this.currentSong != {}) {
-      this.getMusicComment();
-      this.getLyric();
+  async created() {
+    if (this.currentUrl) {
+      await this.getLyric();
+      this.isShow = true;
+      await this.getMusicComment();
     }
   },
 
@@ -188,6 +192,7 @@ export default {
     //获取歌词
     async getLyric() {
       let id = this.songInfo.id;
+
       let ret = await this.$API.reqLyric({ id });
       let lyrics = ret.lrc.lyric;
       //换行符分割
@@ -223,27 +228,33 @@ export default {
       this.lyric = result;
 
       this.currentSong = this.musicList[this.currentIndex];
-      this.isShow = true;
+      this.singer = this.currentSong.ar[0].name;
+      this.title = this.currentSong.name;
+      this.detail = this.currentSong.al.name;
     },
     lyricScroll(currentLyric) {
       // 获取歌词item
-      let lyricsArr = document.querySelectorAll(".lyricsItem");
-      // 获取歌词框
-      let lyrics = document.querySelector(".lyrics");
-      // placeholder的高度
-      if (placeholderHeight == 0) {
-        placeholderHeight = lyricsArr[0].offsetTop - lyrics.offsetTop;
-      }
+      if (this.isShow == true) {
+        let lyricsArr = document.querySelectorAll(".lyricsItem");
+        // 获取歌词框
+        let lyrics = document.querySelector(".lyrics");
+        // placeholder的高度
 
-      if (lyricsArr[currentLyric - 4]) {
-        let distance = lyricsArr[currentLyric - 4].offsetTop - lyrics.offsetTop;
+        if (placeholderHeight == 0) {
+          placeholderHeight = lyricsArr[0].offsetTop - lyrics.offsetTop;
+        }
 
-        //   lyricsArr[currentLyric].scrollIntoView();
+        if (lyricsArr[currentLyric - 4]) {
+          let distance =
+            lyricsArr[currentLyric - 4].offsetTop - lyrics.offsetTop;
 
-        lyrics.scrollTo({
-          behavior: "smooth",
-          top: distance - placeholderHeight,
-        });
+          //   lyricsArr[currentLyric].scrollIntoView();
+
+          lyrics.scrollTo({
+            behavior: "smooth",
+            top: distance - placeholderHeight,
+          });
+        }
       }
     },
     //获取当前歌词索引
@@ -262,10 +273,12 @@ export default {
   },
   watch: {
     songInfo() {
-      this.isShow = true;
-      this.getMusicComment();
-      this.getLyric();
-      this.lyricsIndex = 0;
+      if (this.currentUrl) {
+        this.getMusicComment();
+        this.getLyric();
+        this.lyricsIndex = 0;
+        this.isShow = true;
+      }
     },
 
     currentTime(currentTime, lastTime) {
@@ -275,7 +288,7 @@ export default {
         (this.lyricsIndex == 0 && this.lyric.length > 1)
       ) {
         // 处理播放时间跳转时歌词位置的校准
-        if (this.lyric.length > 1) {
+        if (this.lyric.length > 1 && this.currentUrl != "") {
           this.getCurrentLyricsIndex(currentTime);
           // 滑动到当前歌词
           this.lyricScroll(this.lyricsIndex);
@@ -283,7 +296,10 @@ export default {
       }
       // 根据实时播放时间实现歌词滚动
       if (this.lyricsIndex < this.lyric.length) {
-        if (currentTime >= this.lyric[this.lyricsIndex][0]) {
+        if (
+          currentTime >= this.lyric[this.lyricsIndex][0] &&
+          this.currentUrl != ""
+        ) {
           this.lyricsIndex += 1;
           this.lyricScroll(this.lyricsIndex);
         }
@@ -294,18 +310,13 @@ export default {
       // 大于一秒，说明歌词在1秒后才请求成功 歌词可能不能马上跳转到当前时间 这里进行校准
       if (this.currentTime > 1) {
         // 处理播放时间跳转时歌词位置的校准
-        if (this.lyric.length > 1) {
+        if (this.lyric.length > 1 && this.currentUrl != "") {
           this.getCurrentLyricsIndex(this.currentTime);
-          this.$nextTick(() => {
-            // 滑动到当前歌词
-            this.lyricScroll(this.lyricsIndex);
-          });
+
+          // 滑动到当前歌词
+          this.lyricScroll(this.lyricsIndex);
         }
       }
-    },
-    isShow() {
-      this.getMusicComment();
-      this.getLyric();
     },
   },
 };

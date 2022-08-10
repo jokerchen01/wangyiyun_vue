@@ -111,6 +111,41 @@ const router = new VueRouter({
             component: () => import('@/pages/VideoDetail'),
 
         },
+        {
+            name: 'search',
+            path: '/search',
+            redirect: '/search/searchsong/:id',
+            component: () => import('@/pages/Search'),
+            children: [
+                {
+                    name: 'searchsong',
+                    path: 'searchsong/:id',
+                    component: () => import('@/pages/Search/SearchSong'),
+                },
+                {
+                    name: 'searchsinger',
+                    path: 'searchsinger/:id',
+                    component: () => import('@/pages/Search/SearchSinger'),
+                },
+                {
+                    name: 'searchalbum',
+                    path: 'searchalbum/:id',
+                    component: () => import('@/pages/Search/SearchAlbum'),
+                },
+                {
+                    name: 'searchvideo',
+                    path: 'searchvideo/:id',
+                    component: () => import('@/pages/Search/SearchVideo'),
+                },
+                {
+                    name: 'searchmusiclist',
+                    path: 'searchmusiclist/:id',
+                    component: () => import('@/pages/Search/SearchMusicList'),
+                },
+
+            ]
+
+        },
 
         {
             path: '/',

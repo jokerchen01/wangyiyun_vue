@@ -17,7 +17,10 @@
           </div>
           <div class="play">
             <div class="play-all" @click="playAllSongs">播放全部</div>
-            <div class="collection">收藏</div>
+            <div class="collection" @click="getCollectionSong">
+              <i class="iconfont icon-aixin" :class="isSub ? 'red' : ''"></i>
+              {{ isSub ? "已收藏" : "收藏" }}
+            </div>
             <div class="share">分享</div>
           </div>
           <div class="songInfo">
@@ -162,6 +165,8 @@ export default {
       subscribers: [],
       currentPage: 1,
       loading: true,
+      //是否收藏
+      isSub: false,
     };
   },
 
@@ -248,6 +253,15 @@ export default {
       this.$refs.detail.scrollTop = 0;
       console.log(123);
     },
+    async getCollectionSong() {
+      this.isSub = !this.isSub;
+      let timestamp = Date.parse(new Date());
+      await this.$API.reqCollectionSong({
+        id: this.$route.params.id,
+        t: this.isSub ? 1 : 2,
+        timestamp,
+      });
+    },
   },
   filters: {
     handleNum,
@@ -268,6 +282,7 @@ export default {
 
     $route() {
       this.getSongList();
+      this.flag = 1;
     },
   },
 };
@@ -389,11 +404,6 @@ export default {
           color: #666;
           border: 1px solid #ddd;
           cursor: pointer;
-          &::before {
-            margin-right: 2px;
-            content: "\e61f";
-            font-family: "iconfont";
-          }
         }
         .share {
           width: 80px;
@@ -510,5 +520,11 @@ export default {
 .footer {
   width: 200px;
   height: 50px;
+}
+.isactive {
+  background-color: red;
+}
+.red {
+  color: red;
 }
 </style>

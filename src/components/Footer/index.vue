@@ -38,6 +38,7 @@
           :isPlay="isPlay"
           :currentIndex="currentIndex"
           :currentTime="currentTime + 0.7"
+          v-show="WordDrawer"
         ></MusicWordDrawer>
       </el-drawer>
       <div class="song">

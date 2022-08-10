@@ -90,3 +90,15 @@ export const reqLyric = (params) => requests({ url: `/lyric`, params, method: 'g
 
 //获取用户歌单
 export const reqUserSongList = (params) => requests({ url: `/user/playlist`, params, method: 'get' })
+
+//点击收藏歌单
+export const reqCollectionSong = (params) => requests({ url: `/playlist/subscribe`, params, method: 'get' })
+
+//搜索默认热门提示
+export const reqHotSearch = () => requests({ url: `/search/hot/detail`, method: 'get' })
+//搜索推荐
+export const reqSearchSuggest = (params) => requests({ url: `/search/suggest`, params, method: 'get' })
+//搜索最佳匹配歌手
+export const reqMultMath = (params) => requests({ url: `/search/multimatch`, params, method: 'get' })
+//搜索歌曲列表
+export const reqSearchSong = (params) => requests({ url: `/cloudsearch`, params, method: 'get' })
